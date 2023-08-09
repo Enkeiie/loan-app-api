@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = "mongodb://localhost:27017/loan-api-test"
+}
+
+model Loan {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  value     Float    @default(0.0) @map("amount")
+  loaner    Loaner   @relation(fields: [loanerId], references: [id])
+  loanerId  String   @db.ObjectId
+  createdAt DateTime @default(now()) @map("createdAt")
+  updatedAt DateTime @updatedAt @map("updatedAt")
+
+  @@map("loans")
+}
+
+model Loaner {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  surname     String
+  phoneNumber String @unique
+  Loan        Loan[]
+
+  @@map("loaners")
+}
