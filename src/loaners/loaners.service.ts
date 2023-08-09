@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLoanerDto } from './dto/create-loaner.dto';
 import { UpdateLoanerDto } from './dto/update-loaner.dto';
+import { Loaner } from 'src/loaners/entities/loaner.entity';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class LoanersService {
-  create(createLoanerDto: CreateLoanerDto) {
-    return 'This action adds a new loaner';
+  constructor(private prisma: PrismaService) {}
+
+  async create(data: CreateLoanerDto): Promise<Loaner> {
+    return this.prisma.client.loaner.create({ data });
   }
 
-  findAll() {
-    return `This action returns all loaners`;
+  async findAll(): Promise<Loaner[]> {
+    return this.prisma.client.loaner.findMany();
+  }
+  async findOne(id: string): Promise<Loaner | null> {
+    return this.prisma.client.loaner.findUnique({ where: { id } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} loaner`;
+  async update(id: string, data: UpdateLoanerDto): Promise<Loaner | null> {
+    return this.prisma.client.loaner.update({ where: { id }, data });
   }
 
-  update(id: number, updateLoanerDto: UpdateLoanerDto) {
-    return `This action updates a #${id} loaner`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} loaner`;
+  async remove(id: string): Promise<Loaner | null> {
+    return this.prisma.client.loaner.delete({ where: { id } });
   }
 }

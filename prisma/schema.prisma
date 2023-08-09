@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = "mongodb://localhost:27017/loan-api-test"
+  url = "mongodb+srv://root:root@demo-cluster.lsplp.mongodb.net/loan-api-test"
 }
 
 model Loan {
